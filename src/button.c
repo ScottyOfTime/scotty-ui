@@ -14,13 +14,17 @@
 SDL_Color button_color_hovered = (SDL_Color){173, 46, 36, 255};
 SDL_Color button_color = (SDL_Color){175, 135, 30, 255};
 
-Button* create_button(Screen* screen, int x, int y, const char* text, void (*on_press)) {
+Button* create_button(Screen* screen, int x, int y, const char* text, void (*on_press)(void*),
+		void* arg) {
 	Button* btn_ptr = malloc(sizeof(Button));
 
 	btn_ptr->screen = screen;
 	strcpy(btn_ptr->text, text);
 	btn_ptr->hovered = 0;
 	screen->button = btn_ptr;
+
+	btn_ptr->on_press = on_press;
+	btn_ptr->arg = arg;
 
 	SDL_Surface* text_surf = TTF_RenderText_Solid(btn_ptr->screen->app->font_text, btn_ptr->text,
 			(SDL_Color){255, 255, 255, 255});
@@ -59,6 +63,10 @@ void handle_event_button(Button *button, const SDL_Event *event) {
 			button->hovered = 1;
 		else
 			button->hovered = 0;
+	}
+	if (event->type == SDL_MOUSEBUTTONDOWN &&
+			event->button.button == SDL_BUTTON_LEFT && button->hovered) {
+		button->on_press(button->arg);
 	}
 }
 

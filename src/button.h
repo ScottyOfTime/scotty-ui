@@ -31,10 +31,12 @@ typedef struct {
 
 	uint8_t hovered;		// mouse is hovering button
 
-	void (*on_press)(); 	// pointer to function to execute on button press
+	void (*on_press)(void*); 	// pointer to function to execute on button press
+	void* arg;
 } Button;
 
-Button* create_button(Screen* screen, int x, int y, const char* text, void (*on_press));
+Button* create_button(Screen* screen, int x, int y, const char* text, void (*on_press)(void*),
+		void* arg);
 
 void render_button(Button* button);
 
