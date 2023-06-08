@@ -29,7 +29,7 @@ App* create_app(const char* name, int width, int height) {
 		fprintf(stderr, "Could not initialize SDL_ttf. SDL_ttf error: %s\n", TTF_GetError());
 		exit(1);
 	}
-	app->font_text = TTF_OpenFont("./src/Roboto-Medium.ttf", 24); // TEMP FONT
+	app->font_text = TTF_OpenFont("/usr/share/fonts/TTF/FiraMono-Regular.ttf", 18); // TEMP FONT
 	if (app->font_text == NULL) {
 		fprintf(stderr, "Could not open font Roboto-Medium.ttf, SDL_ttf error; %s\n", TTF_GetError());
 		exit(1);
@@ -45,7 +45,7 @@ uint8_t update_app(App* app) {
 	SDL_SetRenderDrawColor(app->rend, app->screen->bg_color.r, app->screen->bg_color.g,
 			app->screen->bg_color.b, app->screen->bg_color.a);
 	SDL_RenderClear(app->rend);
-	update_screen(app->screen);
+	render_screen(app->screen);
 	SDL_RenderPresent(app->rend);
 	return SC_CONTINUE;
 }
@@ -56,6 +56,7 @@ uint8_t handle_event(App* app) {
 		if (e.type == SDL_QUIT) {
 			return SC_EXIT; 
 		}
+		handle_event_screen(app->screen, &e);
 	}
 	return SC_CONTINUE;
 }

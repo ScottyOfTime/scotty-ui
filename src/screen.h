@@ -29,7 +29,9 @@ typedef struct Screen {
 /* Creates a screen within a scotty-ui app */
 Screen* create_screen(App* app);
 
-void update_screen(Screen* screen);
+void render_screen(Screen* screen);
+
+void handle_event_screen(Screen* screen, const SDL_Event* event);
 
 /* Frees resources used by a screen */
 void destroy_screen(Screen* screen);
